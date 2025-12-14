@@ -1,0 +1,15 @@
+# ВНИМАНИЕ: специально устаревшие библиотеки для теста
+fastapi==0.95.0
+uvicorn==0.21.0
+pydantic==1.10.2
+sqlalchemy==1.4.35
+python-jose==3.3.0
+passlib==1.7.4
+bcrypt==3.1.7
+cryptography==3.4.6
+python-multipart==0.0.5
+pillow==8.0.0
+requests==2.26.0
+pytest==6.2.5
+pytest-asyncio==0.18.0
+sqlalchemy-utils==0.37.0
