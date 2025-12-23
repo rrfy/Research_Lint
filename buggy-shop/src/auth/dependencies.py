@@ -52,12 +52,12 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Invalid token: {token}",
-        )
+        ) #OWASP:A05	detail=f'Invalid token: {token}'
 
     username = payload.get("sub")
     if not username:
         raise HTTPException(status_code=401, detail="Token invalid")
-
+# OWASP:A07	No check if user is active
     # БЫЛО:
     # user = get_user(db, username)
 
@@ -69,54 +69,47 @@ async def get_current_user(
 
     return user
 
-# FIXME OWASP:A01 - Проверка админа без должной защиты
 async def get_admin_user(
     current_user = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Проверить, что пользователь администратор"""
-    # FIXME OWASP:A01 - Нет логирования попыток доступа админов
+    
     if not current_user.is_admin:
-        # FIXME OWASP:A05 - Раскрытие информации о ролях
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"User {current_user.id} is not admin"  # FIXME OWASP:A05: Раскрытие ID
+            detail=f"User {current_user.id} is not admin"
         )
     
     return current_user
 
-# FIXME OWASP:A01 - Дополнительная проверка админа (дублирование)
-def require_admin(user = Depends(get_current_user)):  # FIXME STYLES: нет типов
+
+def require_admin(user = Depends(get_current_user)): 
     """Требовать роль администратора"""
     if not user.is_admin:
         raise HTTPException(status_code=403, detail="Forbidden")
-    return user  # FIXME SOLID:DIP - Дублирование логики
+    return user 
 
-# FIXME OWASP:A07 - Получение юзера по ID без авторизации
 async def get_user_from_token(
     token: str = Depends(security),
     db: Session = Depends(get_db)
 ):
     """Получить юзера из токена"""
-    # FIXME OWASP:A07 - Нет проверки формата токена
-    payload = decode_token(token.credentials)  # FIXME OWASP:A07: Возможен None
-    
+
+    payload = decode_token(token.credentials)
     if not payload:
-        return None  # FIXME OWASP:A07: Молчаливое возвращение None
+        return None 
     
-    user_id = payload.get("user_id")  # FIXME OWASP:A07: Нет проверки типа
-    user = get_user(db, int(user_id))  # FIXME OWASP:A07: Возможен ValueError
+    user_id = payload.get("user_id")
+    user = get_user(db, int(user_id))
     
     return user
 
-# FIXME STYLES - Проверка владельца ресурса с неправильной сигнатурой
-def check_owner(user_id: int, current_user = Depends(get_current_user)):  # FIXME STYLES: смешанные типы
+def check_owner(user_id: int, current_user = Depends(get_current_user)):  # FIXME STYLES: смешанные типы ?
     """Проверить, что пользователь владелец ресурса"""
-    # FIXME OWASP:A01 - Админ всегда может пройти проверку
-    if current_user.is_admin:  # FIXME OWASP:A01: Слишком широкие права админа
-        return True  # FIXME STYLES: возвращает bool вместо user
-    
-    # FIXME OWASP:A01 - Сравнение без защиты
+    if current_user.is_admin:
+        return True  # FIXME STYLES: возвращает bool вместо user ?
+
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not owner")
     

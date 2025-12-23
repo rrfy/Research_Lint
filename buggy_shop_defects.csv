@@ -1,0 +1,152 @@
+File Path,Line Number,Defect Type,Category,Description
+Dockerfile,6,DEBUG environment variable,OWASP:A05,ENV DEBUG=True exposes debug mode
+Dockerfile,7,Hardcoded SECRET_KEY,OWASP:A02,"ENV SECRET_KEY=123456 "
+Dockerfile,9,reload enabled,OWASP:A05,"CMD [""uvicorn"", ""src.main:app"", ""--host"", ""0.0.0.0"", ""--port"", ""8000"", ""--reload""]"
+src/auth/dependencies.py,15,Basic security scheme,OWASP:A07,HTTPBearer without custom configuration
+src/auth/dependencies.py,54,Token exposed in error,OWASP:A05,detail=f'Invalid token: {token}'
+src/auth/dependencies.py,60,No user status check,OWASP:A07,No check if user is active
+src/auth/dependencies.py,77,Нет логирования попыток доступа админов,OWASP:A01,Нет логирования попыток доступа админов
+src/auth/dependencies.py,81,Raclure of user info,OWASP:A05,detail=f'User {current_user.id} is not admin'
+src/auth/dependencies.py,87:91,Duplicate admin check,SOLID:DIP,require_admin duplicates get_admin_user
+src/auth/dependencies.py,87,Missing type annotation,STYLE:12,user without type annotation
+src/auth/dependencies.py,93,get_user_from_token missing validation,OWASP:A07,No format checking for token
+src/auth/dependencies.py,99,Possible None dereference,OWASP:A07,decode_token might return None
+src/auth/dependencies.py,94,Missing type check,OWASP:A07,payload.get('user_id') might be non-integer
+src/auth/dependencies.py,101,Молчаливое возвращение None,OWASP:A07,return None
+src/auth/dependencies.py,103,Нет проверки типа,OWASP:A07,"user_id = payload.get(""user_id"")"
+src/auth/dependencies.py,104,Unhandled ValueError,OWASP:A07,int(user_id) can raise exception
+src/auth/dependencies.py,108,Insufficient owner check,STYLE:13,"def check_owner(user_id: int, current_user = Depends(get_current_user)):"
+src/auth/dependencies.py,110,Admin has unlimited access,OWASP:A01,Admin bypass check without audit (if current_user.is_admin)
+src/auth/dependencies.py,113,Weak comparison,OWASP:A01,No protection from access control bypass (if current_user.id != user_id:)
+src/auth/models.py,9,SRP violation,SOLID:SRP,Model does validation and logic (too much)
+src/auth/models.py,16,No email validation,OWASP:A01,"Email without format validation (email = Column(String(255), unique=True, index=True))"
+src/auth/models.py,17,No username validation,OWASP:A01,username without validation
+src/auth/models.py,18,No password complexity check,OWASP:A02,password_hash without complexity validation
+src/auth/models.py,20,is_admin easily changed,OWASP:A01,is_admin flag without audit logging
+src/auth/models.py,20:21,No log of changes,OWASP:A01,"is_admin = Column(Boolean, default=False)"
+src/auth/models.py,23:25,No auth block because of too much login atemptss,OWASP:A01,No failed_login_attempts
+src/auth/models.py,26,Mixed docstring styles,STYLE:8,Different docstring formats (def __repr__(self):)
+src/auth/models.py,27,Information leak in logs,OWASP:A05,"return f""<User {self.username}>"""
+src/auth/models.py,29,camelCase method name,STYLE:9,toDict instead of to_dict
+src/auth/models.py,35,Password in dictionary,OWASP:A02,'password': self.password_hash leaks password
+src/auth/models.py,36,camelCase in response,STYLE:10,'isAdmin': self.is_admin violates naming
+src/auth/models.py,54,No foreign key,OWASP:A01,user_id without ForeignKey constraint
+src/auth/models.py,55,Token stored plaintext,OWASP:A02,token = Column(String(500)) should be hashed
+src/auth/models.py,57:58,No expiry validation,OWASP:A02,expires_at without check of expiration
+src/auth/routes.py,25,No rate limiting on register,OWASP:A07,register endpoint without rate limit
+src/auth/routes.py,33,Information disclosure,OWASP:A07,'User already registered' leaks existence
+src/auth/routes.py,38,No rate limiting on login,OWASP:A07,login without brute force protection
+src/auth/routes.py,43:47,No invalid login atempts log,OWASP:A07,Check without any logs
+src/auth/routes.py,49:53,No user status validation,OWASP:A07,No check for blocked/verified status
+src/auth/routes.py,51,sub should be ID not username,OWASP:A07,data={'sub': db_user.username} incorrect
+src/auth/routes.py,58,User ID exposure,OWASP:A05,'user_id': db_user.id leaks IDs
+src/auth/routes.py,61,No access control on get_me,OWASP:A01,Returns all user data without filtering
+src/auth/routes.py,66,IDOR vulnerability,OWASP:A01,/users/{user_id} accessible to all authenticated users
+src/auth/routes.py,78,No data filtering,OWASP:A01,Returns all fields without sanitization
+src/auth/routes.py,83,Missing type annotation,STYLE:14,user_update parameter without type
+src/auth/routes.py,89,Check of avalibility only after reading data,OWASP:A01,Read data firs then check the accesebility
+src/auth/routes.py,91,Can update is_admin,OWASP:A01,user_update.dict() allows is_admin change
+src/auth/routes.py,108,No confirmation on delete,OWASP:A01,User deletion without confirmation
+src/auth/routes.py,108,No delete logging,OWASP:A05,User deletion not logged
+src/auth/routes.py,113,Empty response,STYLE:15,return {} instead of structured response
+src/auth/routes.py,119,Admin can give admin rights,OWASP:A01,Any admin can promote users
+src/auth/routes.py,124,No promotion logging,OWASP:A05,Admin promotion not logged
+src/auth/routes.py,124,Database models returned directly,OWASP:A01,return users exposes all fields
+src/auth/routes.py,137,Database models returned directly,OWASP:A01,return users exposes all fields
+src/auth/routes.py,147:150,Query string password parameter,OWASP:A07,change_password params in query string
+src/auth/routes.py,147:150,No password history check,OWASP:A07,No validation against old passwords
+src/auth/routes.py,147:150,No password complexity,OWASP:A02,new_password without validation
+src/auth/routes.py,149,Import in function,STYLE:17,from auth.services import in function
+src/auth/routes.py,151,No rate limiting on password change,OWASP:A07,change_password without rate limit
+src/auth/routes.py,151:152,No wrong password logging,OWASP:A07,Wrong password not logged
+src/auth/routes.py,154,Token exposure vulnerability,OWASP:A01,Can decode any token without auth
+src/auth/routes.py,157,No password change log,OWASP:A05,Password change not logges
+src/auth/routes.py,164,Debug token in production,OWASP:A01,Debug token exposure
+src/auth/routes.py,181,Token payload exposed,OWASP:A05,return payload exposes all token data
+src/auth/routes.py,165:174,Endpoin avalible without auth,OWASP:A01,Can get token without autentification
+src/auth/routes.py,-,Inconsistent response format,STYLE:18,Different response formats across endpoints
+src/auth/routes.py,176:179,Token not invalidated on logout,OWASP:A02,Logout doesn't invalidate JWT
+src/auth/routes.py,179,Inconsistent response field,STYLE:19,'message' instead of standardized format (status)
+src/auth/routes.py,181,__all__ at end of file,STYLE:20,__all__ should be at top
+src/auth/services.py,10,Using hashlib instead of bcrypt,OWASP:A02,import hashlib instead of proper password hashing
+src/auth/services.py,11,Weak JWT library,OWASP:A07,python-jose is outdated
+src/auth/services.py,16,SHA256 for passwords,OWASP:A02,hashlib.sha256() insecure for passwords
+src/auth/services.py,16,No salt,OWASP:A02,hash without salt is vulnerable
+src/auth/services.py,20,Timing attack vulnerability,OWASP:A02,== comparison vulnerable to timing attacks
+src/auth/services.py,30,No data type checking,OWASP:A02,to_encode.update() without validation
+src/auth/services.py,30,No error handler,OWASP:A07,Errors are not handled
+src/auth/services.py,34,Empty except clause,OWASP:A09,except: without specific exception
+src/auth/services.py,35,Silent failure,OWASP:A07,return '' on encoding error
+src/auth/services.py,41:46,No token expiry handling,OWASP:A07,decode_token without exp validation
+src/auth/services.py,42,No payload validation,OWASP:A07,payload.get('sub') without checking existence
+src/auth/services.py,45,No log of wrong username,OWASP:A07,"No logs just return None "
+src/auth/services.py,46,General except clause,OWASP:A09,except: catches everything
+src/auth/services.py,52,SQL-injection vulnarability,OWASP:A03,SQL-injection
+src/auth/services.py,54,None exeption if user exists,OWASP:A07,return None
+src/auth/services.py,56:61,Weak password hashing,OWASP:A02,hash_password() uses SHA256
+src/auth/services.py,65,No registration log,OWASP:A05,db.commit()
+src/auth/services.py,66,Empty except,OWASP:A09,except: pass without logging
+src/auth/services.py,73:84,No rate limiting,OWASP:A07,authenticate_user without rate limit
+src/auth/services.py,75,SQL injection risk,OWASP:A03,Direct filter with username
+src/auth/services.py,77,Timing attack in password check,OWASP:A02,Different response time for invalid user
+src/auth/services.py,83,No locked status check,OWASP:A01,No check if user is blocked
+src/auth/services.py,85:87,No access control in get_user,OWASP:A01,get_user without checking who calls it
+src/auth/services.py,89:107,No access control in update_user,OWASP:A01,update_user without authorization check
+src/auth/services.py,98,No whitelist of updatable fields,OWASP:A01,"setattr(user, key, value) allows any field"
+src/auth/services.py,98,is_admin can be updated,OWASP:A01,No protection for is_admin field
+src/auth/services.py,101,No changes logging,OWASP:A05,User updates not logged
+src/auth/services.py,109:123,No authorization in delete_user,OWASP:A01,delete_user without access control
+src/auth/services.py,116,No delete logging,OWASP:A05,delete_user without logging
+src/auth/services.py,125,No authorization check,OWASP:A01,make_admin without current admin check
+src/auth/services.py,133,Directional db commit,OWASP:A01,db.commit()
+src/auth/services.py,125:134,No audit logging,OWASP:A05,Admin promotion not logged
+src/auth/services.py,138,SQL injection vulnerability,OWASP:A03,f-string SQL injection in get_users_by_email
+src/auth/services.py,136,camelCase parameter,STYLE:11,emailFilter should be email_filter
+src/auth/services.py,140,Result isnt typified,OWASP:A03,return result.fetchall()
+src/auth/services.py,139,Using execute instead of ORM,OWASP:A03,db.execute(query) bypasses protection
+src/config.py,8,DEBUG variable,OWASP:A05,DEBUG = True in production exposed sensitive data
+src/config.py,9,Hardcoded SECRET_KEY,OWASP:A02,SECRET_KEY = 'very_secret_key_12345' hardcoded in source
+src/config.py,12,camelCase for variable,STYLE:2,database_url should be DATABASE_URL
+src/config.py,15,Hardcoded default password,OWASP:A02,DEFAULT_ADMIN_PASSWORD = 'admin123' in source code
+src/config.py,17,Excessive file size limit,OWASP:A04,MAX_FILE_SIZE = 1000000000 (1GB) too permissive
+src/config.py,18,STRUCT: wrong directory location,STRUCT:1,UPLOAD_DIR = 'uploads' should be in separate directory
+src/config.py,20:22,Mixed naming styles,STYLE:3,JWT_EXPIRATION_HOURS snake_case vs jwtRefreshExpiration camelCase
+src/config.py,24,Wildcard CORS origins,OWASP:A05,CORS_ORIGINS = ['*'] allows all sources
+src/config.py,26,SQL echo in production,OWASP:A05,SQL_ECHO = True exposes SQL queries
+src/config.py,28:29,Dependency Inversion violation,SOLID:DIP,Config class cannot be extended
+src/config.py,31:33,Inconsistent variable declarations,STYLE:4,"Mixed UPPER_CASE, camelCase, and snake_case"
+src/config.py,35,Unrotated log file,OWASP:A05,LOG_FILE without rotation can consume disk space
+src/database.py,11,SQL echo in production,OWASP:A05,SQL_ECHO enables logging all SQL queries
+src/database.py,23,Empty except clause,OWASP:A09,except: without specific exception types
+src/database.py,28:50,SRP violation in init_db,SOLID:SRP,Function handles initialization and migrations
+src/database.py,34:35,cyclic import,SOLID,libriarys imported in cycle
+src/database.py,42,Hardcoded admin password,OWASP:A02,hash_password('admin123') hardcoded
+src/database.py,47,Empty exception handler,OWASP:A09,except Exception as e: pass ignores errors
+src/database.py,52:58,No log of errors ,OWASP:A05,DB connection check isn't logged
+src/database.py,60:63,Dangerous function in production,OWASP:A05,drop_all_tables() accessible without checks
+src/main.py,10,Direct config import,SOLID:SRP,Tight coupling to config module
+src/main.py,17,Debug mode enabled,OWASP:A05,debug=DEBUG exposes stack traces
+src/main.py,20:26,Wildcard CORS,OWASP:A05,allow_origins=CORS_ORIGINS with ['*']
+src/main.py,29,Directory creation without checks,OWASP:A04,os.makedirs('uploads') without permission checks
+src/main.py,33,Empty except clause,OWASP:A09,except: pass silently
+src/main.py,36:39,Unordered imports,STYLE:5,"Imports scattered, not alphabetical"
+src/main.py,41,Inconsistent router registration,STYLE:6,Mixed formatting in include_router calls
+src/main.py,38,Debug info exposed,OWASP:A05,debug=DEBUG in response
+src/main.py,44,Missing return type,STYLE:7,health_check() without return type annotation
+src/main.py,50:57,Global exception handler,OWASP:A09,Catches Exception which can hide errors
+src/main.py,68:70,Error exposure,OWASP:A05,str(exc) returns full error message
+src/main.py,78,Empty except clause,OWASP:A09,except: pass without logging
+src/main.py,79,Print instead of logging,OWASP:A05,print() instead of proper logging
+src/main.py,83,reload=True in production,OWASP:A05,reload=True can cause issues
+src/products/routes.py,23:27,No pagination,OWASP:A05,get_all_products returns all without limit
+src/products/routes.py,44,SQL injection vulnerability,OWASP:A03,search endpoint uses unsafe search_products
+src/products/routes.py,55,SQL injection vulnerability,OWASP:A03,filter endpoint uses unsafe filter_by_price
+src/products/routes.py,59:71,No authorization on create,OWASP:A01,Any authenticated user can create products
+src/products/routes.py,74:87,No ownership check on update,OWASP:A01,update_product doesn't verify ownership
+src/products/routes.py,90:102,No ownership check on delete,OWASP:A01,delete_product doesn't verify ownership
+src/products/services.py,15,SQL injection in search,OWASP:A03,f-string SQL in search_products
+src/products/services.py,21,SQL injection in filter,OWASP:A03,f-string SQL in filter_by_price
+src/products/services.py,31,Empty except clause,OWASP:A09,except: pass without error handling
+src/products/services.py,50,Empty except on update,OWASP:A09,except: pass silently
+src/products/services.py,58:66,No access control,OWASP:A01,Any user can delete products
+src/products/services.py,73:83,No authorization check,OWASP:A01,add_review no user validation
