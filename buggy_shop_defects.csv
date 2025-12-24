@@ -104,6 +104,18 @@ src/auth/services.py,138,SQL injection vulnerability,OWASP:A03,f-string SQL inje
 src/auth/services.py,136,camelCase parameter,STYLE:11,emailFilter should be email_filter
 src/auth/services.py,140,Result isnt typified,OWASP:A03,return result.fetchall()
 src/auth/services.py,139,Using execute instead of ORM,OWASP:A03,db.execute(query) bypasses protection
+src/auth/services.py,5,No EmailStr,OWASP:A01,email stored in simple str
+src/auth/schemas.py,10,No email validation,OWASP:A01,Just email: str without any check
+src/auth/schemas.py,11,No username validation,OWASP:A01,No check of username
+src/auth/schemas.py,15,password is stored in simple str,OWASP:A07,"Password isn't coded, so it can be easly leaked"
+src/auth/schemas.py,17:22,password validation is veak,OWASP:A07,Password can be easly bruteforced
+src/auth/schemas.py,24:27,No rate limit,OWASP:A07,Easly bruteforsed
+src/auth/schemas.py,27,No length limit,OWASP:A07,No password length limit
+src/auth/schemas.py,34,is_admin leak,OWASP:A01,Enyone can spot admin users
+src/auth/schemas.py,,,,
+src/auth/schemas.py,,,,
+src/auth/schemas.py,,,,
+src/auth/schemas.py,,,,
 src/config.py,8,DEBUG variable,OWASP:A05,DEBUG = True in production exposed sensitive data
 src/config.py,9,Hardcoded SECRET_KEY,OWASP:A02,SECRET_KEY = 'very_secret_key_12345' hardcoded in source
 src/config.py,12,camelCase for variable,STYLE:2,database_url should be DATABASE_URL
@@ -141,7 +153,7 @@ src/main.py,83,reload=True in production,OWASP:A05,reload=True can cause issues
 src/products/routes.py,23:27,No pagination,OWASP:A05,get_all_products returns all without limit
 src/products/routes.py,44,SQL injection vulnerability,OWASP:A03,search endpoint uses unsafe search_products
 src/products/routes.py,55,SQL injection vulnerability,OWASP:A03,filter endpoint uses unsafe filter_by_price
-src/products/routes.py,59:71,No authorization on create,OWASP:A01,Any authenticated user can create products
+src/products/routes.pyыук,59:71,No authorization on create,OWASP:A01,Any authenticated user can create products
 src/products/routes.py,74:87,No ownership check on update,OWASP:A01,update_product doesn't verify ownership
 src/products/routes.py,90:102,No ownership check on delete,OWASP:A01,delete_product doesn't verify ownership
 src/products/services.py,15,SQL injection in search,OWASP:A03,f-string SQL in search_products
