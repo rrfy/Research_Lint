@@ -52,7 +52,7 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Invalid token: {token}",
-        ) #OWASP:A05	detail=f'Invalid token: {token}'
+        )
 
     username = payload.get("sub")
     if not username:
@@ -105,10 +105,10 @@ async def get_user_from_token(
     
     return user
 
-def check_owner(user_id: int, current_user = Depends(get_current_user)):  # FIXME STYLES: смешанные типы ?
+def check_owner(user_id: int, current_user = Depends(get_current_user)):
     """Проверить, что пользователь владелец ресурса"""
     if current_user.is_admin:
-        return True  # FIXME STYLES: возвращает bool вместо user ?
+        return True
 
     if current_user.id != user_id:
         raise HTTPException(status_code=403, detail="Not owner")

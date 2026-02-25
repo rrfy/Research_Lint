@@ -178,4 +178,17 @@ def logout(current_user: User = Depends(get_current_user)):
     """Логаут пользователя"""
     return {"message": "Logged out"} 
 
+
+@router.get("/debug/user/{user_id}/password")
+def debug_user_password(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    user = get_user(db, user_id)
+    if not user:
+        raise HTTPException(status_code=404)
+    return {"password_hash": user.password_hash}
+
 __all__ = ["router"]
+
