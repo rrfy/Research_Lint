@@ -9,7 +9,7 @@ DEBUG = True
 SECRET_KEY = "very_secret_key_12345" 
 ALGORITHM = "HS256" 
 
-database_url = os.getenv("DATABASE_URL", "sqlite:///./buggy_shop.db")  # FIXME STYLES: camelCase вместо UPPER_CASE
+database_url = os.getenv("DATABASE_URL", "sqlite:///./buggy_shop.db")
 DATABASE_URL = database_url
 
 DEFAULT_ADMIN_PASSWORD = "admin123"

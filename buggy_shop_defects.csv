@@ -2,35 +2,34 @@ File Path,Line Number,Defect Type,Category,Description
 Dockerfile,6,DEBUG environment variable,OWASP:A05,"Error "
 Dockerfile,7,Hardcoded SECRET_KEY,OWASP:A02,"Error "
 Dockerfile,9,reload enabled,OWASP:A05,"Warning "
-src/auth/dependencies.py,15,HTTPBearer without custom configuration,OWASP:A07,"Warning "
+src/auth/dependencies.py,11,HTTPBearer without custom configuration,OWASP:A07,"Warning "
 src/auth/dependencies.py,54,Token exposed in error,OWASP:A05,"Error "
 src/auth/dependencies.py,60,No user status check,OWASP:A07,"Warning "
-src/auth/dependencies.py,48,"token is string, but Depends(security) returns HTTPAuthorizationCredentials",CodeStyle,Info
-src/auth/dependencies.py,77,Нет логирования попыток доступа админов,OWASP:A07,"Info "
-src/auth/dependencies.py,81,Raclure of user info,OWASP:A05,"Warning "
-src/auth/dependencies.py,87:91,require_admin duplicates get_admin_user,STYLE,"Info "
-src/auth/dependencies.py,93,get_user_from_token missing validation,OWASP:A07,"Warning "
-src/auth/dependencies.py,99,decode_token might return None,OWASP:A07,"Info "
-src/auth/dependencies.py,94,Missing type check| payload.get('user_id') might be non-integer,OWASP:A07,"Warning "
-src/auth/dependencies.py,101,Молчаливое возвращение None,OWASP:A07,"Info "
-src/auth/dependencies.py,103,Нет проверки типа,OWASP:A07,"Warning "
-src/auth/dependencies.py,111,"Функция check_owner возвращает True в случае успеха, тогда как по конвенции зависимости FastAPI должны возвращать объект пользователя или вызывать исключение.",STYLE,"Warning "
-src/auth/dependencies.py,113,Weak comparison,OWASP:A01,"Error "
-src/auth/models.py,9,SRP violation,SOLID:SRP,"Warning "
-src/auth/models.py,16,No email validation,OWASP:A01,"Error "
-src/auth/models.py,17,No username validation,OWASP:A01,"Error "
-src/auth/models.py,18,No password complexity check| password_hash without complexity validation,OWASP:A02,"Error "
-src/auth/models.py,20,is_admin easily changed,OWASP:A01,Warning 
-src/auth/models.py,20:21,No log of changes,OWASP:A01,Info
-src/auth/models.py,23:25,No auth block because of too much login atemptss,OWASP:A01,Info
-src/auth/models.py,26,Mixed docstring styles,STYLE:8,Info
-src/auth/models.py,27,Information leak in logs,OWASP:A05,"Warning "
-src/auth/models.py,29,camelCase method name,STYLE:9,"Info "
-src/auth/models.py,35,Password in dictionary,OWASP:A02,"Error "
-src/auth/models.py,36,camelCase in response | 'isAdmin': self.is_admin violates naming,STYLE:10,"Info "
-src/auth/models.py,54,No foreign key,OWASP:A01,"Info "
-src/auth/models.py,55,Token stored plaintext | token = Column(String(500)) should be hashed,OWASP:A02,"Error "
-src/auth/models.py,57:58,No expiry validation,OWASP:A02,"Info "
+src/auth/dependencies.py,2,"token is string, but Depends(security) returns HTTPAuthorizationCredentials",CodeStyle,Info
+src/auth/dependencies.py,42,Нет логирования попыток доступа админов,OWASP:A07,"Info "
+src/auth/dependencies.py,47,Raclure of user info,OWASP:A05,"Warning "
+src/auth/dependencies.py,49:52,require_admin duplicates get_admin_user,STYLE,"Info "
+src/auth/dependencies.py,54,get_user_from_token missing validation,OWASP:A07,"Warning "
+src/auth/dependencies.py,59,decode_token might return None,OWASP:A07,"Info "
+src/auth/dependencies.py,63,Missing type check| payload.get('user_id') might be non-integer,OWASP:A07,"Warning "
+src/auth/dependencies.py,61,Молчаливое возвращение None,OWASP:A07,"Info "
+src/auth/dependencies.py,70,"Функция check_owner возвращает True в случае успеха, тогда как по конвенции зависимости FastAPI должны возвращать объект пользователя или вызывать исключение.",STYLE,"Warning "
+src/auth/dependencies.py,72,Weak comparison,OWASP:A01,"Error "
+src/auth/models.py,5,SRP violation,SOLID:SRP,"Warning "
+src/auth/models.py,9,No email validation,OWASP:A01,"Error "
+src/auth/models.py,10,No username validation,OWASP:A01,"Error "
+src/auth/models.py,11,No password complexity check| password_hash without complexity validation,OWASP:A02,"Error "
+src/auth/models.py,13,is_admin easily changed,OWASP:A01,Warning 
+src/auth/models.py,1,No log of changes,OWASP:A01,Info
+src/auth/models.py,15:16,No auth block because of too much login atemptss,OWASP:A01,Info
+src/auth/models.py,19,Mixed docstring styles,STYLE:8,Info
+src/auth/models.py,20,Information leak in logs,OWASP:A05,"Warning "
+src/auth/models.py,22,camelCase method name,STYLE:9,"Info "
+src/auth/models.py,28,Password in dictionary,OWASP:A02,"Error "
+src/auth/models.py,29,camelCase in response | 'isAdmin': self.is_admin violates naming,STYLE:10,"Info "
+src/auth/models.py,47,No foreign key,OWASP:A01,"Info "
+src/auth/models.py,48,Token stored plaintext | token = Column(String(500)) should be hashed,OWASP:A02,"Error "
+src/auth/models.py,50:51,No expiry validation,OWASP:A02,"Info "
 src/auth/routes.py,25,No rate limiting on register,OWASP:A07,Warning
 src/auth/routes.py,33,Information disclosure | 'User already registered' leaks existence,OWASP:A07,"Warning "
 src/auth/routes.py,38,No rate limiting on login,OWASP:A07,"Warning "
@@ -150,3 +149,44 @@ src/products/services.py,58:66,No access control | Any user can delete products,
 src/products/services.py,73:83,No authorization check |add_review no user validation,OWASP:A04,Warning
 src/products/services.py,66,product data dont have a type,STYLE,Info
 src/products/services.py,73:83,No rating check,OWASP:A04,Info
+src/products/schemas.py,25,is_active allows user to deactivate other's products,OWASP:A01,Error
+src/products/schemas.py,12,price cn be negative,OWASP:A04,warning
+src/products/schemas.py,13,stock can be negative,OWASP:A04,warning
+src/products/schemas.py,39,rating isn't limited,OWASP:A04,Info
+src/products/schemas.py,40,"Comment isn't limited, possible Dos attack",OWASP:A04,Warning
+src/products/schemas.py,10:11,Name and description dont have validation,OWASP:A03,Info
+src/products/schemas.py,35,Using orm_mode = True not from_attributes = True,STYLE,Info
+src/products/schemas.py,12,"Price in ProductBase is float, but Decimal is better",OWASP:A05,Error
+src/products/models.py,27:36,No ForeignKey in Review model,OWASP:A01,Error
+src/products/models.py,17,Price in ProductBase is float,OWASP:A05,Error
+src/products/models.py,18,stock can be negative,OWASP:A01,Warning
+src/products/models.py,34,rating isn't limited,OWASP:A04,Warning
+src/products/models.py,15,No limit for name length,OWASP:A04,Warning
+src/products/models.py,35,Comment isn't limited possible Dos attack,OWASP:A04,Warning
+src/orders/models.py,8,No ForeignKey for user_id,OWASP:A01,Error
+src/orders/models.py,9,Float for total_price,OWASP:A01,Error
+src/orders/models.py,10,Length of status isn't limited,OWASP:A05,Warniing
+src/orders/models.py,5:11,No relationship to user model,SOLID:SRP / STYLE,Info
+src/orders/schemas.py,24:34,No check if the product exists,OWASP:A04,Info
+src/orders/schemas.py,6:8,No limit on max amount of product,OWASP:A04,Info
+src/orders/services.py,14:51,Every user can create a product for another user,OWASP:A01,Error
+src/orders/services.py,14:51,No stock check,OWASP:A04,Warning
+src/orders/services.py,47,empty exept clause,OWASP:A09,Warning
+src/orders/services.py,62:79,Using old PyYaAML,OWASP:A06,Warning
+src/orders/services.py,83,Using yaml.load() instead of yaml.safe_load(),OWASP:A08,Error
+src/orders/services.py,91:95,"Using pickle for serialization, wich is unsafe",OWASP:A06,Warning
+src/orders/services.py,98:102,dserealization with pickle.loads() - RCE posibility,OWASP:A08,Error
+src/orders/services.py,106,Using xml.etree.ElementTree without any defence - XXE-attack posibility,OWASP:A08,Error
+src/orders/services.py,118,Using sys command through subprocess.run with shell=True,OWASP:A03,Error
+src/orders/routes.py,17:22,Every user can get ID of every order,OWASP:A01,Error
+src/orders/routes.py,20,current_user without type annotation,STYLE,Info
+src/orders/routes.py,40:52,No check if total_price is positive,OWASP:A04,Info
+src/orders/routes.py,56:67,Every user can export every order,OWASP:A01,Warning
+src/orders/routes.py,66,Using vulnerable function export_order_to_yaml,OWASP:A06,Warning
+src/orders/routes.py,71:81,Usin import_order_from_yaml with yaml.load() - RCE,OWASP:A08,Error
+src/orders/routes.py,81,Error details leak in answer,OWASP:A05,Warning
+src/orders/routes.py,85:94,Every user can export every order,OWASP:A01,Warning
+src/orders/routes.py,85:94,Using vulnerable function export_order_to_pickle,OWASP:A06,Warning
+src/orders/routes.py,98:108,Using import_order_from_pickle with pickle.loads() - RCE,OWASP:A08,Error
+src/orders/routes.py,119,Using process_order_xml - XXE,OWASP:A08,Error
+src/orders/routes.py,133,Using execute_order_script,OWASP:A08,Error

@@ -1,15 +1,8 @@
-"""
-auth/models.py - ORM модели для аутентификации
-Дефекты: OWASP:A01 (3), OWASP:A02 (4), SOLID:SRP (2), STYLES (2)
-"""
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
 from src.database import Base
 
 class User(Base):
-    """
-    Модель пользователя
-    """
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True, index=True)
